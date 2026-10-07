@@ -1,0 +1,49 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Thomas Wallet Testnet</title>
+<style>
+body{margin:0;background:#eef0f3;font-family:system-ui,sans-serif;color:#111827}.app{max-width:420px;margin:auto;min-height:100vh;background:white;padding:22px;box-sizing:border-box}
+h1{margin-top:35px}.tag{display:inline-block;padding:6px 10px;border-radius:20px;background:#fff3cd;color:#7a5200;font-size:12px;font-weight:700}
+.card{padding:20px;border-radius:20px;background:#111827;color:white;margin:20px 0}.balance{font-size:28px;font-weight:800}button{width:100%;padding:15px;margin:7px 0;border:0;border-radius:14px;font-weight:700;font-size:15px}.primary{background:#f59e0b}.secondary{background:#eee}pre{white-space:pre-wrap;word-break:break-word;background:#f3f4f6;padding:15px;border-radius:14px}
+.warn{background:#fff7ed;padding:14px;border-radius:14px;font-size:13px;line-height:1.5}
+</style></head>
+<body><div class="app">
+<div class="tag">BITCOIN TESTNET ONLY</div>
+<h1>₿ Thomas Wallet</h1>
+<p>Safe development prototype. No real Bitcoin is supported.</p>
+<div id="view"></div>
+</div>
+<script>
+const demoWords=["river","planet","coffee","window","silver","garden","future","orange","forest","rocket","morning","stone"];
+function randomId(){const a=new Uint32Array(4);crypto.getRandomValues(a);return [...a].map(x=>x.toString(16).padStart(8,"0")).join("")}
+function create(){
+ const phrase=[...demoWords]; // Deliberately demo-only; not BIP-39.
+ localStorage.setItem("thomas_testnet_demo_id",randomId());
+ document.getElementById("view").innerHTML=`
+ <div class="warn"><b>Demo recovery phrase</b><br>These words are NOT a real BIP-39 seed and must never be used with real funds.</div>
+ <pre>${phrase.join(" ")}</pre>
+ <button class="primary" onclick="dashboard()">I backed it up</button>`;
+}
+function dashboard(){
+ document.getElementById("view").innerHTML=`
+ <div class="card"><small>Testnet balance</small><div class="balance">0.00000000 tBTC</div></div>
+ <button class="primary" onclick="alert('Testnet send module is the next implementation step.')">Send</button>
+ <button class="secondary" onclick="receive()">Receive</button>
+ <button class="secondary" onclick="security()">Security</button>
+ <p class="warn"><b>Security status:</b> This build does not generate or store real private keys.</p>`;
+}
+function receive(){
+ document.getElementById("view").innerHTML=`
+ <h2>Receive testnet BTC</h2><p>Testnet address generation will be connected in the next cryptographic build.</p>
+ <pre>tb1q...testnet-address-not-generated...</pre>
+ <button class="secondary" onclick="dashboard()">Back</button>`;
+}
+function security(){
+ document.getElementById("view").innerHTML=`
+ <h2>Security</h2><p>Production requirements: BIP-39 seed generation, BIP-32/84 derivation, encrypted key storage, biometric/PIN protection, transaction signing, fee estimation, address validation and recovery testing.</p>
+ <button class="secondary" onclick="dashboard()">Back</button>`;
+}
+document.getElementById("view").innerHTML=`<button class="primary" onclick="create()">Create test wallet</button>
+<button class="secondary" onclick="dashboard()">Open demo dashboard</button>
+<p class="warn">Never enter a real recovery phrase into this prototype.</p>`;
+</script></body></html>
